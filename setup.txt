@@ -1,0 +1,4 @@
+npm init
+nvm use 22.15.0
+npm install -D typescript @types/node tsx
+npm install -D vitest
