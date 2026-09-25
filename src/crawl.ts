@@ -32,3 +32,40 @@ export function getFirstParagraphFromHTML(html: string): string {
     return "";
   }
 }
+
+
+export function getURLsFromHTML(html: string, baseURL: string): string[] {
+  const urls: string[] = [];
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  const a = doc.querySelectorAll("a")
+
+  a.forEach((userItem) => {
+    try {
+      const hrefPath = userItem.getAttribute("href");
+      new URL(hrefPath);
+      urls.push(userItem.getAttribute("href"));
+    } catch {
+      urls.push(`${baseURL}${userItem.getAttribute("href")}`);
+    }
+  });
+  return urls;
+}
+
+export function getImagesFromHTML(html: string, baseURL: string): string[] {
+  const urls: string[] = [];
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  const img = doc.querySelectorAll("img")
+
+  img.forEach((userItem) => {
+    try {
+      const srcPath = userItem.getAttribute("src");
+      new URL(srcPath);
+      urls.push(userItem.getAttribute("src"));
+    } catch {
+      urls.push(`${baseURL}${userItem.getAttribute("src")}`);
+    }
+  });
+  return urls;
+}

@@ -3,6 +3,8 @@ import {
   normalizeURL,
   getHeadingFromHTML,
   getFirstParagraphFromHTML,
+  getURLsFromHTML,
+  getImagesFromHTML
 } from "./crawl";
 
 test("normalizeURL protocol", () => {
@@ -75,5 +77,23 @@ test("getFirstParagraphFromHTML no paragraphs", () => {
   const inputBody = `<html><body><h1>Title</h1></body></html>`;
   const actual = getFirstParagraphFromHTML(inputBody);
   const expected = "";
+  expect(actual).toEqual(expected);
+});
+
+test("getURLsFromHTML absolute", () => {
+  const inputURL = "https://crawler-test.com";
+  const inputBody = `<html><body><a href="/path/one"><span>Boot.dev</span></a></body></html>`;
+  const actual = getURLsFromHTML(inputBody, inputURL);
+  const expected = ["https://crawler-test.com/path/one"];
+  expect(actual).toEqual(expected);
+});
+
+test("getImagesFromHTML relative", () => {
+  const inputURL = "https://crawler-test.com";
+  const inputBody = `<html><body><img src="/logo.png" alt="Logo"></body></html>`;
+
+  const actual = getImagesFromHTML(inputBody, inputURL);
+  const expected = ["https://crawler-test.com/logo.png"];
+
   expect(actual).toEqual(expected);
 });
